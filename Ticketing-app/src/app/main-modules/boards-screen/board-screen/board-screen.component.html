@@ -1,0 +1,35 @@
+<section>
+    <h1>welcome to my fancy Ticketing app</h1>
+    <p class="description-text">here you can choose a board from the list or create a new one</p>
+    <div class="my-boards">
+        <div class="title-row">
+            <h2>My Boards</h2>
+            <app-ui-button (clickEmitter)="modalStateGlobalService.openModal('createBoardModal')">
+                +
+            </app-ui-button>
+        </div>
+        <div class="board-preview-holder">
+            <app-board-preview *ngFor="let board of (boardsFromService$ | async)" [boardFromParent]="board"></app-board-preview>
+        </div>
+    </div>
+
+    <app-modal *ngIf="modalStateGlobalService.modals.createBoardModal" (close)="modalStateGlobalService.closeModal('createBoardModal')">
+        <div class="create-board-modal-body">
+            <h2>create new board</h2>
+            <form (keyup.enter)="createNewBoard()">
+                <ui-input
+                    inputName="Title"
+                    [fc]="fcBoardName"
+                ></ui-input>
+                <ui-input
+                    inputName="Boad description"
+                    [fc]="fcBoardDescription"
+                ></ui-input>
+            </form>
+            <app-ui-button (clickEmitter)="createNewBoard()">
+                create
+            </app-ui-button>
+        </div>
+    </app-modal>    
+</section>
+ 

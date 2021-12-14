@@ -1,0 +1,13 @@
+<div class="modal modal-visible">
+    <div class="modal-background" (click)="closeModal($event)" id="layout"></div>
+    <div class="card" [class.card-wide]="cardWide">
+        <div class="modal-body">
+            <svg id="close" (click)="closeModal($event)" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="isCloseIcon">
+                <path id="closeX" d="M18 6L6 18" stroke="#52616B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="closeY" d="M6 6L18 18" stroke="#52616B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <ng-content></ng-content>
+        </div> 
+    </div>
+</div>
+ 

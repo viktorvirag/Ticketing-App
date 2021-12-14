@@ -1,0 +1,49 @@
+.board-preview,
+.img-holder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.img-holder {
+    flex: 3 1 30ch;
+	overflow: hidden;
+
+    img {
+        max-width: 100%;
+		min-height: 100%;
+		width: auto;
+		height: auto;
+		object-fit: cover;
+		object-position: 50% 50%;
+    }
+}
+.board-preview {
+    width: clamp(320px, 50%, 50%);
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: white;
+    margin-bottom: 15px;
+
+    .content-holder {
+        padding: 16px 32px;
+		flex: 1 1 25ch;
+    }
+}
+.board-title {
+    font-weight: bold;
+    font-size: 25px;
+}
+small {
+    text-align: start;
+}
+.text-holder {
+    padding-bottom: 20px;
+}
+.button-holder {
+    display: flex;
+}
+.open-board-btn {
+    display: block;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}

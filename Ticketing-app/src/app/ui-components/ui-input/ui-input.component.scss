@@ -1,0 +1,59 @@
+@import "../../styles/variables.scss";
+input {
+    background-color: $white;
+    border: 1px solid #C7C7C7;
+    box-sizing: border-box;
+    border-radius: 30px;
+    outline: none;
+    margin: 5px 0;
+    padding-left: 10px;
+    color: $primary-color;
+    height: 46px;
+    width: 100%;
+    transition: all .3s ease-in-out;
+    &.input-error {
+        border: 1px solid $error;
+    }
+    &.input-success {
+        border: 1px solid $success;
+    }
+    &.input-disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+input:focus {
+    border: 1px solid $primary-color;
+    transition: all .3s ease-in-out;
+}
+input:hover:not(:focus) {
+    cursor: pointer;
+}
+.input-name {
+    //font-family: $nunitoBold;
+    color: $primary-color;
+}
+.input-info {
+    padding-top: 5px;
+    font-weight: 400;
+    color: $primary-color;
+}
+.error-container {
+    min-height: 20px;
+}
+.error-message {
+    font-weight: 400;
+    font-size: 14px;
+    color: $error;
+}
+.password-text-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.to-forgotten-password {
+    // padding-top: 5px;
+    cursor: pointer;
+    color: $primary-color;
+    font-weight: 400;
+}
