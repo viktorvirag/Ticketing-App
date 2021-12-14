@@ -1,0 +1,19 @@
+<div class="ui-dialog">
+    <p class="subtitle">{{dialogText}}</p>
+    <div class="warning-holder">
+        <img src="../../../assets/images/warning.png" alt="warning" class="warning-image">
+        <small>{{warningText}}</small>
+    </div>
+    <div class="dialog-buttons-holder">
+        <app-ui-delete-button
+            class="back-button"
+            (clickEmitter)="backClicked()"
+            >{{backButtonText}}
+        </app-ui-delete-button>
+        <app-ui-button
+            class="confirm-button"
+            (clickEmitter)="confirmClicked()"
+            >{{confirmButtonText}}
+        </app-ui-button>
+    </div>
+</div>

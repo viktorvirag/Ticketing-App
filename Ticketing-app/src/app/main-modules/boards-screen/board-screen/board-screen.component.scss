@@ -1,0 +1,24 @@
+.title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    h2 {
+        padding-right: 15px;
+    }
+}
+.my-boards {
+    padding-top: 5em;
+}
+.board-preview-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 2em;
+}
+.create-board-modal-body {
+    h2 {
+        padding-bottom: 15px;
+    }
+    width: 40vw;
+}

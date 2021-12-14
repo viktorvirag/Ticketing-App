@@ -1,0 +1,31 @@
+<div class="board-preview">
+    <div class="img-holder">
+        <img src="../../../../../assets/images/board_preview_1.jpg" alt="" class="board-preview-img">
+    </div>
+    <div class="content-holder">
+        <div class="text-holder">
+            <small>board info:</small>
+            <p class="board-title">{{boardFromParent?.name}}</p>
+            <p class="board-text">{{boardFromParent?.description}}</p>
+        </div>
+        <div class="button-holder">
+            <app-ui-button class="open-board-btn">
+                open
+            </app-ui-button>
+            <app-ui-delete-button (clickEmitter)="openModal('deleteDialog')">
+                delete
+            </app-ui-delete-button>
+        </div>
+    </div>
+</div>
+
+<app-modal *ngIf="modals.deleteDialog" (close)="closeModal('deleteDialog')">
+    <app-ui-dialog 
+        dialogText="Are you sure you want to delete this board?"
+        warningText="You won't be able to reset later"
+        (confirmClickEmitter)="deleteBoard(boardFromParent)"
+        confirmButtonText="delete"
+        (backClickEmitter)="closeModal('deleteDialog')"
+        backButtonText="cancel"
+    ></app-ui-dialog> 
+</app-modal>
