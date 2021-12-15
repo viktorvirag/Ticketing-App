@@ -1,0 +1,9 @@
+<section>
+    <h3>Board details</h3>
+    <ng-container *ngIf="selectedBoardFromService$ | async as boardModel">
+        <h1>{{boardModel.name}}</h1>
+        <p> {{boardModel.description}}</p>
+        {{boardModel | json}}
+        <app-column *ngFor="let column of boardModel.columnList"></app-column>
+    </ng-container>
+</section>

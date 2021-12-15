@@ -10,9 +10,7 @@ import { BoardsStateService } from '../../boards-state.service';
 })
 export class BoardPreviewComponent implements OnInit {
   @Input() boardFromParent: BoardModel;
-  public modals: {[key: string]: boolean} = {
-    deleteDialog: false
-  }
+ 
   constructor(
     private boardsStateService: BoardsStateService,
     public modalStateGlobalService: ModalStateGlobalService
@@ -20,15 +18,12 @@ export class BoardPreviewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  openModal(key: string) {
-    this.modals[key] = true;
-  }
-  closeModal(key: string) {
-    this.modals[key] = false;
-  }
   deleteBoard(boardToDelete: BoardModel) {
     this.boardsStateService.deleteBoard(boardToDelete);
     this.modalStateGlobalService.closeModal('deleteDialog');
+  }
+  get modalsFromServie(): boolean {
+    return this.modalStateGlobalService.modals[`deleteDialog-${this.boardFromParent.id}`]
   }
 
 }

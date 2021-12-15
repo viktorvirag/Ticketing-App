@@ -4,15 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ModalStateGlobalService {
-  public modals: {[key: string]: boolean} = {
-    createBoardModal : false  
+  public modals: {
+    [key: string]: boolean,
+  } = {
+    createBoardModal : false,
   }
   constructor() { }
 
-  openModal(key: string) {
-    this.modals[key] = true;
+  openModal(key: string, id?: number) {
+    const targetKey = id ? `${key}-${id}` : key;
+    this.modals[targetKey] = true;
   }
-  closeModal(key: string) {
-    this.modals[key] = false;
+  closeModal(key: string, id?: number) {
+    const targetKey = id ? `${key}-${id}` : key;
+    this.modals[targetKey] = false;
   }
 }

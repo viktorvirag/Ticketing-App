@@ -10,13 +10,23 @@ export class BoardsStateService {
   private readonly _boards = new BehaviorSubject<BoardModel[]>([]);
   boards$ = this._boards.asObservable();
 
+  private readonly _selectedBoard = new BehaviorSubject<BoardModel>(new BoardModel());
+  selectedBoard$ = this._selectedBoard.asObservable();
+
   constructor() {
-    //this.monckBoards()
   }
 
   getBoards() {
     const storedBoards = JSON.parse(localStorage.getItem('boardList') || '[]');
     this._boards.next(storedBoards);
+  }
+  
+  getBoardById(id: number) {
+    this.getBoards();
+    let indexOfSelectedBoard = this._boards.getValue().findIndex((board) => board.id === id);
+    if(indexOfSelectedBoard != -1) {
+      this._selectedBoard.next(this._boards.getValue()[indexOfSelectedBoard]);
+    }
   }
 
   createBorad(newBoard: BoardModel) {
@@ -38,37 +48,4 @@ export class BoardsStateService {
   returnIdOfPreviousBoard() {
     return this._boards.getValue()[0]?.id;
   }
-
-  // monckBoards() {
-  //   let csulos = [];
-  //   let csul = new BoardModel();
-  //   csul.id = 1;
-  //   csul.description = "Hogy lettem csulos Jr10?";
-  //   csul.name = "Miért lettem csul?";
-  //   csul.columnList = [];
-  //   csulos.push(csul);
-
-  //   let csul2 = new BoardModel();
-  //   csul2.id = 2;
-  //   csul2.description = "Hogy lettem csulos Jr10?";
-  //   csul2.name = "Miért lettem csul?";
-  //   csul2.columnList = [];
-  //   csulos.push(csul2);
-
-  //   let csul3 = new BoardModel();
-  //   csul3.id = 3;
-  //   csul3.description = "ahol amúgy kifejtem h szoszi van ezzel, mert amúgy miért ne";
-  //   csul3.name = "Eléggé hosszú projekt név";
-  //   csul3.columnList = [];
-  //   csulos.push(csul3);
-
-  //   let csul4 = new BoardModel();
-  //   csul4.id = 4;
-  //   csul4.description = "Hogy lettem csulos Jr10?";
-  //   csul4.name = "Miért lettem csul?";
-  //   csul4.columnList = [];
-  //   csulos.push(csul4);
-
-  //   this._boards.next(csulos);
-  // }
 }
