@@ -1,1 +1,65 @@
-<p>column works!</p>
+<div class="column-main-holder">
+    <div 
+        class="drop-area" 
+        cdkDropList
+        [cdkDropListData]="columnFromParent.taskList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="column-header">
+            <h3>{{columnFromParent?.name}}</h3>
+            <app-ui-more (clickEmitter)="isMenuVisible = !isMenuVisible"></app-ui-more>
+        </div>
+        <app-ticket
+            *ngFor="let ticket of columnFromParent?.taskList"
+            [ticketFromParent]="ticket"
+            cdkDrag
+            [cdkDragData]="columnFromParent?.taskList"
+        ></app-ticket>
+    </div>
+    <div class="add-new-ticket">
+        <app-ui-button *ngIf="!isCreateFormVisible" (clickEmitter)="toggleForm()">
+            + add new ticket
+        </app-ui-button>
+
+        <form *ngIf="isCreateFormVisible" (keyup.enter)="addNewTicket()" class="create-column-form">
+            <div class="close-x-holder">
+                <svg id="close" class="close-x" (click)="toggleForm()" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path id="closeX" d="M18 6L6 18" stroke="#52616B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path id="closeY" d="M6 6L18 18" stroke="#52616B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <ui-input
+                inputName="column name"
+                [fc]="fcTicketName"
+            ></ui-input>
+            <app-ui-button (clickEmitter)="addNewTicket()">
+                create
+            </app-ui-button>
+        </form>
+
+    </div>
+    <div *ngIf="isMenuVisible" class="more-menu">
+        <div class="menu-header">
+            <span>Options</span>
+        </div>
+        <div class="menu-body">
+            <ul class="list">
+                <li (click)="modalStateGlobalService.openModal('deleteDialog', columnFromParent.id)">
+                    delete column
+                    <img src="../../../../../assets/images/trash.png" alt="delete">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<app-modal *ngIf="modalsFromServie" (close)="modalStateGlobalService.closeModal('deleteDialog-' + columnFromParent.id)">
+    <app-ui-dialog 
+        dialogText="Are you sure you want to delete this column?"
+        warningText="You won't be able to reset later"
+        (confirmClickEmitter)="callDeleteColumn(columnFromParent.id)"
+        confirmButtonText="delete"
+        (backClickEmitter)="modalStateGlobalService.closeModal('deleteDialog-' + columnFromParent.id)"
+        backButtonText="cancel"
+    ></app-ui-dialog> 
+</app-modal>
+

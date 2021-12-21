@@ -1,5 +1,5 @@
 <div class="input-name">{{inputName}}</div>
-<div class="input-info">{{inputInfo}}</div>
+<div *ngIf="inputInfo" class="input-info">{{inputInfo}}</div>
 <form autocomplete="off">
     <input
     autocomplete="off"
@@ -10,7 +10,7 @@
     [class.input-disabled]="isInputDisabled"
 />
 </form>
-<div class="error-container">
+<div *ngIf="isFormControlInvalid" class="error-container">
     <div class="error-message" *ngIf="isFormControlInvalid">{{ returnErrorMsg }}</div>
     <div class="error-message"><div *ngFor="let err of serverErrorDictionaryKeys"> {{serverErrorDictionary[err]}}</div></div> 
 </div>

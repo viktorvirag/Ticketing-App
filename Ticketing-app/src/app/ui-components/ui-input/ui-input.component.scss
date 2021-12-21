@@ -3,7 +3,7 @@ input {
     background-color: $white;
     border: 1px solid #C7C7C7;
     box-sizing: border-box;
-    border-radius: 30px;
+    border-radius: $border-radius-btn;
     outline: none;
     margin: 5px 0;
     padding-left: 10px;
@@ -31,6 +31,7 @@ input:hover:not(:focus) {
 }
 .input-name {
     //font-family: $nunitoBold;
+    font-size: 15px;
     color: $primary-color;
 }
 .input-info {

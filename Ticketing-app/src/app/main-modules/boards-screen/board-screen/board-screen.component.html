@@ -16,7 +16,7 @@
     <app-modal *ngIf="modalStateGlobalService.modals.createBoardModal" (close)="modalStateGlobalService.closeModal('createBoardModal')">
         <div class="create-board-modal-body">
             <h2>create new board</h2>
-            <form (keyup.enter)="createNewBoard()">
+            <form class="create-board-form" (keyup.enter)="createNewBoard()">
                 <ui-input
                     inputName="Title"
                     [fc]="fcBoardName"
