@@ -13,7 +13,8 @@
             [ticketFromParent]="ticket"
             cdkDrag
             [cdkDragData]="columnFromParent?.taskList"
-        ></app-ticket>
+        >
+        </app-ticket>
     </div>
     <div class="add-new-ticket">
         <app-ui-button *ngIf="!isCreateFormVisible" (clickEmitter)="toggleForm()">

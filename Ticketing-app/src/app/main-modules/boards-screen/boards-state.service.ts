@@ -38,7 +38,6 @@ export class BoardsStateService {
     column.id = greatestColumnId ? greatestColumnId + 1 : 1;
     currentBoard.columnList.push(column);
     // itt már friss mindkét observable
-    console.log("_selectedBoard", this._selectedBoard.getValue(),"currentBoard.columnList.push",this._boards.getValue());
     this.setBoardListToStorage();
   }
 
@@ -49,7 +48,6 @@ export class BoardsStateService {
       //task.id = this.returnIdOfPreviousTicket();
       this.ticketService.setGreatestTaskId(task.id);
       currentBoard.columnList[indexOfTargetColumn].taskList.push(task);
-      console.log("végén az id", task.id);
       this.setBoardListToStorage();
      
     }
@@ -61,7 +59,6 @@ export class BoardsStateService {
     if(indexToDelete != -1) {
       currentBoard.columnList.splice(indexToDelete, 1);
       this.setBoardListToStorage();
-      console.log("selectedBoard:", this._selectedBoard.getValue(), "boardList:", this._boards.getValue());
     }
   }
  

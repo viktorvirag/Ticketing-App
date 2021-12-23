@@ -54,11 +54,8 @@ export class ColumnComponent implements OnInit {
   get modalsFromServie(): boolean {
     return this.modalStateGlobalService.modals[`deleteDialog-${this.columnFromParent.id}`]
   }
-  // drop(event: CdkDragDrop<TaskModel[]>) {
-  //   moveItemInArray(this.columnFromParent?.taskList, event.previousIndex, event.currentIndex);
-  // }
   drop(event: CdkDragDrop<TaskModel[]>) {
-    //console.log(event)
+    console.log("2")
     if (event.previousContainer === event.container) {
       moveItemInArray(this.columnFromParent?.taskList, event.previousIndex, event.currentIndex);
     } else {

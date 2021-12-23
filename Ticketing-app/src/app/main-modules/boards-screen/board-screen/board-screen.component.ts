@@ -62,9 +62,6 @@ export class BoardScreenComponent implements OnInit {
     this.resetCreateForm();
     this.modalStateGlobalService.closeModal('createBoardModal')
 
-    console.log("newBoard.id", newBoard.id);
-    console.log("newColumn (default)", newColumn.id);
-    console.log("defaultTask.id", defaultTask.id);
   }
   resetCreateForm() {
     this.fcBoardName.reset();
