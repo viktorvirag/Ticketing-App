@@ -1,3 +1,4 @@
+@import '../../../../styles/variables.scss';
 .board-preview,
 .img-holder {
     display: flex;
@@ -20,7 +21,7 @@
 .board-preview {
     width: clamp(320px, 50%, 50%);
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: $border-radius;
     background-color: white;
     margin-bottom: 15px;
 

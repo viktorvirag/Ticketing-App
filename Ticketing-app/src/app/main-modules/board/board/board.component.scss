@@ -1,0 +1,26 @@
+@import '../../../styles/variables.scss';
+.columns-holder {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 20px;
+    max-width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+.close-x-holder {
+    text-align: end;
+}
+.close-x {
+    cursor: pointer;
+}
+.add-btn {
+    display: block;
+    width: 300px;
+}
+.create-column-form {
+    width: $column-width;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: $border-radius;
+    background-color: #e9ecef;
+}

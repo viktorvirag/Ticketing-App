@@ -1,3 +1,4 @@
+@import '../../styles/variables.scss';
 button {
     display: flex;
     align-items: center;
@@ -7,9 +8,12 @@ button {
     padding: 10px 30px;
     cursor: pointer;
     border: none;
-    border-radius: 25px;
+    border-radius: $border-radius-btn;
     text-align: center;
     font-size: 18px;
     background-color: #0A9396;
     color: white;
+}
+.disabled {
+    cursor: not-allowed;
 }

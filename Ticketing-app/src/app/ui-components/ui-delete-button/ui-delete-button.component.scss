@@ -8,7 +8,7 @@ button {
     padding: 10px 30px;
     cursor: pointer;
     border: none;
-    border-radius: 25px;
+    border-radius: $border-radius-btn;
     text-align: center;
     font-size: 18px;
     background-color: $error;

@@ -9,23 +9,23 @@
             <p class="board-text">{{boardFromParent?.description}}</p>
         </div>
         <div class="button-holder">
-            <app-ui-button class="open-board-btn">
+            <app-ui-button class="open-board-btn" [routerLink]="['../board', boardFromParent.id]">
                 open
             </app-ui-button>
-            <app-ui-delete-button (clickEmitter)="openModal('deleteDialog')">
+            <app-ui-delete-button (clickEmitter)="modalStateGlobalService.openModal('deleteDialog', boardFromParent.id)">
                 delete
             </app-ui-delete-button>
         </div>
     </div>
 </div>
 
-<app-modal *ngIf="modals.deleteDialog" (close)="closeModal('deleteDialog')">
+<app-modal *ngIf="modalsFromServie" (close)="modalStateGlobalService.closeModal('deleteDialog-' + boardFromParent.id)">
     <app-ui-dialog 
         dialogText="Are you sure you want to delete this board?"
         warningText="You won't be able to reset later"
         (confirmClickEmitter)="deleteBoard(boardFromParent)"
         confirmButtonText="delete"
-        (backClickEmitter)="closeModal('deleteDialog')"
+        (backClickEmitter)="modalStateGlobalService.closeModal('deleteDialog-' + boardFromParent.id)"
         backButtonText="cancel"
     ></app-ui-dialog> 
 </app-modal>

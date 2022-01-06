@@ -1,0 +1,30 @@
+@import '../../../../../styles/variables.scss';
+.ticket-holder-main {
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: white;
+    border-radius: $border-radius;
+}
+.ticket-title {
+    font-weight: bold;
+}
+.ticket-description {
+    display: block;
+}
+form {
+    min-width: 500px;
+    padding-top: 40px;
+
+    .autocomplete {
+        width: 100%;
+    }
+}
+.buttons-holder {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+.assign-popup {
+    padding: 20px;
+}

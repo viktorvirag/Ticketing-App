@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ui-button',
@@ -9,12 +9,20 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 export class UiButtonComponent implements OnInit {
 
   @Output() clickEmitter = new EventEmitter<any>();
+  @Input() disabled: boolean = false;
+  
   constructor() { }
 
   ngOnInit(): void {
   }
+
   emitClick() {
-    this.clickEmitter.emit();
+    if(!this.disabled) {
+      this.clickEmitter.emit();
+    }
   }
 
+  get isDisabled() {
+    return this.disabled;
+  }
 }

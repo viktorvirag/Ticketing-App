@@ -40,7 +40,7 @@ export class UiInputComponent implements OnInit {
     ]; 
   }
     
-  get serverErrorDictionaryKeys(){
+  get serverErrorDictionaryKeys() {
     return Object.keys(this.serverErrorDictionary)
   }
 

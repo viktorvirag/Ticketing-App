@@ -1,3 +1,3 @@
-<button (click)="emitClick()">
+<button (click)="emitClick()" [class.disabled]="isDisabled">
     <ng-content></ng-content>
 </button>
