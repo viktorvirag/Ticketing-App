@@ -7,7 +7,7 @@ export class ModalStateGlobalService {
   public modals: {
     [key: string]: boolean,
   } = {
-    createBoardModal : false,
+    createBoardModal: false
   }
   constructor() { }
 

@@ -1,12 +1,14 @@
 <div class="column-main-holder">
     <div 
+        id="column-holder"
         class="drop-area" 
         cdkDropList
         [cdkDropListData]="columnFromParent.taskList"
-        (cdkDropListDropped)="drop($event)">
+        (cdkDropListDropped)="drop($event)"
+        (contextmenu)="configContextMenu($event, columnFromParent.id)">
         <div class="column-header">
             <h3>{{columnFromParent?.name}}</h3>
-            <app-ui-more (clickEmitter)="isMenuVisible = !isMenuVisible"></app-ui-more>
+            <app-ui-more (click)="configContextMenu($event, columnFromParent.id)"></app-ui-more>
         </div>
         <app-ticket
             *ngFor="let ticket of columnFromParent?.taskList"
@@ -14,7 +16,7 @@
             cdkDrag
             [cdkDragData]="columnFromParent?.taskList"
         >
-        </app-ticket>
+        </app-ticket> 
     </div>
     <div class="add-new-ticket">
         <app-ui-button *ngIf="!isCreateFormVisible" (clickEmitter)="toggleForm()">

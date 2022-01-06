@@ -35,7 +35,14 @@ export class BoardScreenComponent implements OnInit {
     const greatestBoardId = this.boardsStateService.returnIdOfPreviousBoard();
     const newBoard = new BoardModel;
     const defaultColumns = new Array<ColumnModel>();
+
+    newBoard.id = greatestBoardId? greatestBoardId + 1 : 1;
+    newBoard.name = this.fcBoardName.value ? this.fcBoardName.value : 'Untitled';
+    newBoard.description = this.fcBoardDescription.value ? this.fcBoardDescription.value : '';
+    newBoard.columnList = defaultColumns;
+    
     const newColumn = new ColumnModel;
+    newColumn.boardId = newBoard.id;
     newColumn.id = 1;
     newColumn.name = "New";
 
@@ -52,10 +59,7 @@ export class BoardScreenComponent implements OnInit {
     newColumn.taskList = [defaultTask];
     defaultColumns.push(newColumn);
 
-    newBoard.id = greatestBoardId? greatestBoardId + 1 : 1;
-    newBoard.name = this.fcBoardName.value ? this.fcBoardName.value : 'Untitled';
-    newBoard.description = this.fcBoardDescription.value ? this.fcBoardDescription.value : '';
-    newBoard.columnList = defaultColumns;
+
 
     this.boardsStateService.createBorad(newBoard);
     this.ticketService.setGreatestTaskId(defaultTask.id);

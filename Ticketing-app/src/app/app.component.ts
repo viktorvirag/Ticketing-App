@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { ContextMenuService } from './services/context-menu.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Ticketing-app';
+  @HostListener('click') callback() {
+    this.contextMenuService.closeContextMenu()
+  }
+  constructor(public contextMenuService: ContextMenuService) {
+  }
 }

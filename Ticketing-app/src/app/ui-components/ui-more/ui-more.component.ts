@@ -11,8 +11,8 @@ export class UiMoreComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  emitClick() {
-    this.clickEmitter.emit();
+  emitClick($event: any) {
+    this.clickEmitter.emit($event);
   }
 
 }

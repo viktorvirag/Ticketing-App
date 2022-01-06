@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { BoardModel } from 'src/app/models/boardModel';
 import { ColumnModel } from 'src/app/models/columnModel';
 import { TaskModel } from 'src/app/models/taskModel';
+import { ModalStateGlobalService } from 'src/app/services/modal-state-global.service';
 import { TicketService } from 'src/app/services/ticket.service';
 
 @Injectable({
@@ -16,7 +17,10 @@ export class BoardsStateService {
   private readonly _selectedBoard = new BehaviorSubject<BoardModel>(new BoardModel());
   selectedBoard$ = this._selectedBoard.asObservable();
 
-  constructor(private ticketService: TicketService) {
+  constructor(
+    private ticketService: TicketService,
+    private modalStateGlobalService: ModalStateGlobalService
+    ) {
   }
 
   getBoards() {
@@ -53,6 +57,19 @@ export class BoardsStateService {
     }
   }
 
+  deleteTask(id: number, columnId: number) {
+    const currentBoard = this._selectedBoard.getValue();
+    const indexOfTargetColumn = currentBoard.columnList.findIndex(column => column.id === columnId);
+    if (indexOfTargetColumn != -1) {
+      const taskHolderColumn = currentBoard.columnList[indexOfTargetColumn];
+      const indexOfTargetTask = taskHolderColumn.taskList.findIndex(column => column.id === id);
+      if (indexOfTargetTask != -1) {
+        currentBoard.columnList[indexOfTargetColumn].taskList.splice(indexOfTargetTask, 1);
+        this.setBoardListToStorage();
+      }
+    }
+  }
+
   deleteColumn(columnId: number) {
     const currentBoard = this._selectedBoard.getValue();
     const indexToDelete = currentBoard.columnList.findIndex(column => column.id === columnId);
@@ -61,7 +78,6 @@ export class BoardsStateService {
       this.setBoardListToStorage();
     }
   }
- 
 
   createBorad(newBoard: BoardModel) {
     const boardList = this._boards.getValue();
@@ -79,16 +95,51 @@ export class BoardsStateService {
       localStorage.setItem('boardList', JSON.stringify(this._boards.getValue()));
     }
   }
+
+  moveTicket(ticket: TaskModel, targetBoard: BoardModel, targetColumn: ColumnModel) {
+    //be kell tenni az új helyre
+    const boardList = this._boards.getValue();
+    const indexOfTargetBoard = boardList.findIndex(b => b.id === targetBoard.id);
+    if (indexOfTargetBoard != -1) {
+      const indexOfTargetColumn = boardList[indexOfTargetBoard].columnList.findIndex(c => c.id === targetColumn.id);
+      if(indexOfTargetColumn != -1) {
+        //ticket.columnId = targetColumn.id;
+        boardList[indexOfTargetBoard].columnList[indexOfTargetColumn].taskList.push(ticket);
+        //eddig jó
+
+        //ha megvolt, ki kell szedni a régiből
+        const currentBoard = this._selectedBoard.getValue();
+        const indexOfColumnToSplice = currentBoard.columnList.findIndex(c => c.id === ticket.columnId);
+        if(indexOfColumnToSplice != -1) {
+          const indexToDelete = currentBoard.columnList[indexOfColumnToSplice].taskList.findIndex(t => t.id === ticket.id);
+          if (indexToDelete!= -1){
+            currentBoard.columnList[indexOfColumnToSplice].taskList.splice(indexToDelete, 1);
+            //frissíteni a ticket.columnId-t
+            //ticket.columnId = targetColumn.id;
+            //frissíteni a storage-et
+            this.setBoardListToStorage();
+            //bezárni a popup-ot
+            this.modalStateGlobalService.closeModal('moveTicketModal-' + ticket.id)
+          }
+        }
+      }
+    }
+  }
+
   setBoardListToStorage(): void {
     localStorage.setItem('boardList', JSON.stringify(this._boards.getValue()));
   }
+
   returnIdOfPreviousBoard(): number {
     return this._boards.getValue()[0]?.id;
   }
+
   returnIdOfPreviousColumn(board: BoardModel): number {
     return board.columnList[board.columnList.length - 1]?.id;
   }
+
   updateSelectedBoard(board: BoardModel): void {
     this._selectedBoard.next(board);
   }
+
 }

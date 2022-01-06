@@ -11,6 +11,11 @@ import { UiInputModule } from 'src/app/ui-components/ui-input/ui-input.module';
 import { UiMoreModule } from 'src/app/ui-components/ui-more/ui-more.module';
 import { UiDialogModule } from 'src/app/ui-components/ui-dialog/ui-dialog.module';
 import { ModalModule } from 'src/app/ui-components/modal/modal.module';
+import { ContextMenuModule } from 'src/app/ui-components/context-menu/context-menu.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +31,11 @@ import { ModalModule } from 'src/app/ui-components/modal/modal.module';
     UiInputModule,
     UiMoreModule,
     ModalModule,
-    UiDialogModule
+    UiDialogModule,
+    ContextMenuModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
   ]
 })
 export class BoardModule { }

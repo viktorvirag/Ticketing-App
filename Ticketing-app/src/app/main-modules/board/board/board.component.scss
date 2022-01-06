@@ -4,8 +4,8 @@
     align-items: flex-start;
     padding-top: 20px;
     max-width: 100%;
-    overflow: scroll;
-
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 .close-x-holder {
     text-align: end;

@@ -3,7 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BoardsStateService } from 'src/app/main-modules/boards-screen/boards-state.service';
 import { ColumnModel } from 'src/app/models/columnModel';
+import { ContextMenuElement } from 'src/app/models/contextMenuElement';
 import { TaskModel } from 'src/app/models/taskModel';
+import { ContextMenuService } from 'src/app/services/context-menu.service';
 import { ModalStateGlobalService } from 'src/app/services/modal-state-global.service';
 import { TicketService } from 'src/app/services/ticket.service';
 
@@ -23,7 +25,8 @@ export class ColumnComponent implements OnInit {
   constructor(
     public boardsStateService: BoardsStateService,
     public modalStateGlobalService: ModalStateGlobalService,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private contextMenuService: ContextMenuService,
   ) { }
 
   
@@ -55,7 +58,6 @@ export class ColumnComponent implements OnInit {
     return this.modalStateGlobalService.modals[`deleteDialog-${this.columnFromParent.id}`]
   }
   drop(event: CdkDragDrop<TaskModel[]>) {
-    console.log("2")
     if (event.previousContainer === event.container) {
       moveItemInArray(this.columnFromParent?.taskList, event.previousIndex, event.currentIndex);
     } else {
@@ -67,5 +69,20 @@ export class ColumnComponent implements OnInit {
       );
     }
     this.boardsStateService.setBoardListToStorage();
+  }
+  configContextMenu($event: any, columnId: number) {
+    console.log("event:", $event, "id:", $event.target.id); 
+    const elementList = new Array<ContextMenuElement>();
+    const deleteOption = new ContextMenuElement();
+    deleteOption.title = "Delete column";
+    deleteOption.method = () => {
+      this.boardsStateService.deleteColumn(columnId);
+    }
+    elementList.push(deleteOption);
+    this.contextMenuService.setContextMenuElements(elementList);
+    const offsetY = $event.clientY + "px";
+    const offsetX = $event.clientX + "px";
+    this.contextMenuService.showContextMenu(offsetY, offsetX);
+    return false;
   }
 }
