@@ -33,30 +33,27 @@ export class BoardScreenComponent implements OnInit {
 
   createNewBoard() {   
     const greatestBoardId = this.boardsStateService.returnIdOfPreviousBoard();
-    const newBoard = new BoardModel;
     const defaultColumns = new Array<ColumnModel>();
 
-    newBoard.id = greatestBoardId? greatestBoardId + 1 : 1;
-    newBoard.name = this.fcBoardName.value ? this.fcBoardName.value : 'Untitled';
-    newBoard.description = this.fcBoardDescription.value ? this.fcBoardDescription.value : '';
-    newBoard.columnList = defaultColumns;
+    const newBoard = new BoardModel(
+      greatestBoardId? greatestBoardId + 1 : 1,
+      this.fcBoardName.value ? this.fcBoardName.value : 'Untitled',
+      this.fcBoardDescription.value ? this.fcBoardDescription.value : '',
+      defaultColumns
+    );
     
-    const newColumn = new ColumnModel;
-    newColumn.boardId = newBoard.id;
-    newColumn.id = 1;
-    newColumn.name = "New";
+    const newColumn = new ColumnModel(1, newBoard.id, "New", [], true);
 
-    const defaultTask = new TaskModel();
     const greatestId = this.ticketService.returnGreatestTaskId();
+    const defaultTask = new TaskModel(
+      greatestId ? greatestId + 1 : 1,
+      newColumn.id,
+      "Default Task",
+      "description of my default task",
+      8
+    );
     
-    defaultTask.id = greatestId ? greatestId + 1 : 1;
-    defaultTask.columnId = newColumn.id;
-    defaultTask.title = "Default Task";
-    defaultTask.description = "description of my default task";
-    defaultTask.difficulty = 8;
-    defaultTask.columnId = newColumn.id;
-
-    newColumn.taskList = [defaultTask];
+    newColumn.taskList.push(defaultTask);
     defaultColumns.push(newColumn);
 
 
@@ -64,9 +61,10 @@ export class BoardScreenComponent implements OnInit {
     this.boardsStateService.createBorad(newBoard);
     this.ticketService.setGreatestTaskId(defaultTask.id);
     this.resetCreateForm();
-    this.modalStateGlobalService.closeModal('createBoardModal')
+    this.modalStateGlobalService.closeModal('createBoardModal');
 
   }
+  
   resetCreateForm() {
     this.fcBoardName.reset();
     this.fcBoardDescription.reset();

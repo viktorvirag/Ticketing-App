@@ -4,7 +4,7 @@
     <p *ngIf="ticketFromParent.difficulty">difficulty: {{ticketFromParent.difficulty}}</p>
 </div>
 
-<app-modal *ngIf="modalsFromServie" (close)="modalStateGlobalService.closeModal('moveTicketModal-' + ticketFromParent.id)">
+<app-modal *ngIf="modalsFromServie" (close)="modalStateGlobalService.closeModal('moveTicketModal-' + ticketFromParent.id)" (mousedown)="stopIt($event)">
     <ng-container *ngIf="boardList$ | async as boardList">
         <div class="assign-popup">
             <h3>Assign ticket to another board</h3>
