@@ -37,8 +37,8 @@ export class BoardsStateService {
   }
 
   addColumnToSelectedBoard(column: ColumnModel) {
-    const currentBoard = {...this._selectedBoard.getValue()};
-    const greatestColumnId = this.returnIdOfPreviousColumn(currentBoard);
+    const currentBoard = this._selectedBoard.getValue();
+    const greatestColumnId = this.returnGreatestColumnId(this._selectedBoard.getValue());
     column.id = greatestColumnId ? greatestColumnId + 1 : 1;
     currentBoard.columnList.push(column);
     this.setBoardListToStorage();
@@ -128,8 +128,8 @@ export class BoardsStateService {
     return this._boards.getValue()[0]?.id;
   }
 
-  returnIdOfPreviousColumn(board: BoardModel) {
-    const boardClone = new BoardModel(board.id, board.name, board.description, board.columnList);
+  returnGreatestColumnId(board: BoardModel) {
+    const boardClone = new BoardModel(board.id, board.name, board.description, [...board.columnList]);
     const sortedArray = boardClone.columnList.sort((a, b) => {
       return a.id - b.id;
     });
