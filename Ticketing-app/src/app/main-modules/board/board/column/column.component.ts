@@ -6,6 +6,7 @@ import { ColumnModel } from 'src/app/models/columnModel';
 import { ContextMenuElement } from 'src/app/models/contextMenuElement';
 import { TaskModel } from 'src/app/models/taskModel';
 import { ContextMenuService } from 'src/app/services/context-menu.service';
+import { DragAndDropService } from 'src/app/services/drag-and-drop.service';
 import { ModalStateGlobalService } from 'src/app/services/modal-state-global.service';
 import { TicketService } from 'src/app/services/ticket.service';
 
@@ -19,7 +20,6 @@ import { TicketService } from 'src/app/services/ticket.service';
 export class ColumnComponent implements OnInit {
   @Input() columnFromParent: ColumnModel;
   public isCreateFormVisible: boolean = false;
-  public isMenuVisible: boolean = false;
   public fcTicketName: FormControl = new FormControl(null, Validators.required);
 
   constructor(
@@ -27,21 +27,23 @@ export class ColumnComponent implements OnInit {
     public modalStateGlobalService: ModalStateGlobalService,
     private ticketService: TicketService,
     private contextMenuService: ContextMenuService,
+    private dragAndDropService: DragAndDropService
   ) { }
 
-  
   ngOnInit(): void {
     this.ticketService.getGreatestId();
   }
+
   toggleForm() {
     this.isCreateFormVisible = !this.isCreateFormVisible;
   }
   addNewTicket() {
-    const ticketToCreate = new TaskModel;
-    let id = this.ticketService.returnGreatestTaskId();
-    ticketToCreate.id = id? id + 1 : 1;
-    ticketToCreate.columnId = this.columnFromParent.id;
-    ticketToCreate.title = this.fcTicketName.value;
+    const id = this.ticketService.returnGreatestTaskId();
+    const ticketToCreate = new TaskModel(
+      id? id + 1 : 1,
+      this.columnFromParent.id,
+      this.fcTicketName.value
+    );
     this.boardsStateService.addTaskToSelectedBoard(ticketToCreate);
     this.ticketService.setGreatestTaskId(ticketToCreate.id);
     this.resetForm();
@@ -57,25 +59,16 @@ export class ColumnComponent implements OnInit {
   get modalsFromServie(): boolean {
     return this.modalStateGlobalService.modals[`deleteDialog-${this.columnFromParent.id}`]
   }
-  drop(event: CdkDragDrop<TaskModel[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.columnFromParent?.taskList, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    this.boardsStateService.setBoardListToStorage();
+  drop(event: CdkDragDrop<TaskModel[]>, DropListData: any[]) {
+    this.dragAndDropService.drop(event, DropListData);
   }
   configContextMenu($event: any, columnId: number) {
-    console.log("event:", $event, "id:", $event.target.id); 
+    $event.stopPropagation();
     const elementList = new Array<ContextMenuElement>();
     const deleteOption = new ContextMenuElement();
     deleteOption.title = "Delete column";
     deleteOption.method = () => {
+      //ide kell egy delete dialog
       this.boardsStateService.deleteColumn(columnId);
     }
     elementList.push(deleteOption);

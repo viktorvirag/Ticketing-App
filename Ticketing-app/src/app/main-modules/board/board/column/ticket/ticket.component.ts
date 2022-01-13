@@ -59,7 +59,10 @@ export class TicketComponent implements OnInit {
     //this.selectColumnControl.reset();
   }
   callMoveTicket() {
-    this.boardsStateService.moveTicket(this.ticketFromParent, this.moveTicketForm.controls["selectBoardControl"].value, this.moveTicketForm.controls["selectColumnControl"].value);
+    this.boardsStateService.moveTicket(this.ticketFromParent, (this.moveTicketForm.controls["selectBoardControl"].value).id, (this.moveTicketForm.controls["selectColumnControl"].value).id);
+  }
+  stopIt($event: any) {
+    $event.stopPropagation();
   }
   getOptionText(option: BoardModel) {
     return option?.name;

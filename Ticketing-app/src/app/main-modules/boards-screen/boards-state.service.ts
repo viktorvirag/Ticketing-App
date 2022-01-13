@@ -14,7 +14,7 @@ export class BoardsStateService {
   private readonly _boards = new BehaviorSubject<BoardModel[]>([]);
   boards$ = this._boards.asObservable();
 
-  private readonly _selectedBoard = new BehaviorSubject<BoardModel>(new BoardModel());
+  private readonly _selectedBoard = new BehaviorSubject<BoardModel>({} as BoardModel);
   selectedBoard$ = this._selectedBoard.asObservable();
 
   constructor(
@@ -31,24 +31,23 @@ export class BoardsStateService {
   getBoardById(id: number) {
     this.getBoards();
     let indexOfSelectedBoard = this._boards.getValue().findIndex((board) => board.id === id);
-    if(indexOfSelectedBoard != -1) {
+    if(indexOfSelectedBoard !== -1) {
       this._selectedBoard.next(this._boards.getValue()[indexOfSelectedBoard]);
     }
   }
 
   addColumnToSelectedBoard(column: ColumnModel) {
     const currentBoard = this._selectedBoard.getValue();
-    const greatestColumnId = this.returnIdOfPreviousColumn(currentBoard)
+    const greatestColumnId = this.returnGreatestColumnId(this._selectedBoard.getValue());
     column.id = greatestColumnId ? greatestColumnId + 1 : 1;
     currentBoard.columnList.push(column);
-    // itt már friss mindkét observable
     this.setBoardListToStorage();
   }
 
   addTaskToSelectedBoard(task: TaskModel) {
     const currentBoard = this._selectedBoard.getValue();
     const indexOfTargetColumn = currentBoard.columnList.findIndex(column => column.id === task.columnId);
-    if(indexOfTargetColumn != -1) {
+    if(indexOfTargetColumn !== -1) {
       //task.id = this.returnIdOfPreviousTicket();
       this.ticketService.setGreatestTaskId(task.id);
       currentBoard.columnList[indexOfTargetColumn].taskList.push(task);
@@ -60,10 +59,10 @@ export class BoardsStateService {
   deleteTask(id: number, columnId: number) {
     const currentBoard = this._selectedBoard.getValue();
     const indexOfTargetColumn = currentBoard.columnList.findIndex(column => column.id === columnId);
-    if (indexOfTargetColumn != -1) {
+    if (indexOfTargetColumn !== -1) {
       const taskHolderColumn = currentBoard.columnList[indexOfTargetColumn];
       const indexOfTargetTask = taskHolderColumn.taskList.findIndex(column => column.id === id);
-      if (indexOfTargetTask != -1) {
+      if (indexOfTargetTask !== -1) {
         currentBoard.columnList[indexOfTargetColumn].taskList.splice(indexOfTargetTask, 1);
         this.setBoardListToStorage();
       }
@@ -73,7 +72,7 @@ export class BoardsStateService {
   deleteColumn(columnId: number) {
     const currentBoard = this._selectedBoard.getValue();
     const indexToDelete = currentBoard.columnList.findIndex(column => column.id === columnId);
-    if(indexToDelete != -1) {
+    if(indexToDelete !== -1) {
       currentBoard.columnList.splice(indexToDelete, 1);
       this.setBoardListToStorage();
     }
@@ -88,7 +87,7 @@ export class BoardsStateService {
 
   deleteBoard(boardToDelete: BoardModel) {
     const indexToDelete = this._boards.getValue().findIndex(board => board.id === boardToDelete.id);
-    if(indexToDelete != -1) {
+    if(indexToDelete !== -1) {
       let boardList = this._boards.getValue();
       boardList.splice(indexToDelete, 1);
       this._boards.next(boardList);
@@ -96,31 +95,26 @@ export class BoardsStateService {
     }
   }
 
-  moveTicket(ticket: TaskModel, targetBoard: BoardModel, targetColumn: ColumnModel) {
+  moveTicket(ticket: TaskModel, targetBoardId: number, targetColumnId: number) {
     //be kell tenni az új helyre
     const boardList = this._boards.getValue();
-    const indexOfTargetBoard = boardList.findIndex(b => b.id === targetBoard.id);
-    if (indexOfTargetBoard != -1) {
-      const indexOfTargetColumn = boardList[indexOfTargetBoard].columnList.findIndex(c => c.id === targetColumn.id);
-      if(indexOfTargetColumn != -1) {
-        //ticket.columnId = targetColumn.id;
-        boardList[indexOfTargetBoard].columnList[indexOfTargetColumn].taskList.push(ticket);
-        //eddig jó
-
-        //ha megvolt, ki kell szedni a régiből
-        const currentBoard = this._selectedBoard.getValue();
-        const indexOfColumnToSplice = currentBoard.columnList.findIndex(c => c.id === ticket.columnId);
-        if(indexOfColumnToSplice != -1) {
-          const indexToDelete = currentBoard.columnList[indexOfColumnToSplice].taskList.findIndex(t => t.id === ticket.id);
-          if (indexToDelete!= -1){
-            currentBoard.columnList[indexOfColumnToSplice].taskList.splice(indexToDelete, 1);
-            //frissíteni a ticket.columnId-t
-            //ticket.columnId = targetColumn.id;
-            //frissíteni a storage-et
-            this.setBoardListToStorage();
-            //bezárni a popup-ot
-            this.modalStateGlobalService.closeModal('moveTicketModal-' + ticket.id)
-          }
+    const indexOfTargetBoard = boardList.findIndex(b => b.id === targetBoardId);
+    const indexOfTargetColumn = boardList[indexOfTargetBoard].columnList.findIndex(c => c.id === targetColumnId);
+    if (indexOfTargetBoard !== -1 && indexOfTargetColumn !== -1) {
+      boardList[indexOfTargetBoard].columnList[indexOfTargetColumn].taskList.push(ticket);
+      //ha megvolt, ki kell szedni a régiből
+      const currentBoard = this._selectedBoard.getValue();
+      const indexOfColumnToSplice = currentBoard.columnList.findIndex(c => c.id === ticket.columnId);
+      if(indexOfColumnToSplice !== -1) {
+        const indexToDelete = currentBoard.columnList[indexOfColumnToSplice].taskList.findIndex(t => t.id === ticket.id);
+        if (indexToDelete!== -1){
+          currentBoard.columnList[indexOfColumnToSplice].taskList.splice(indexToDelete, 1);
+          //frissíteni a ticket.columnId-t
+          ticket.columnId = targetColumnId;
+          //frissíteni a storage-et
+          this.setBoardListToStorage();
+          //bezárni a popup-ot
+          this.modalStateGlobalService.closeModal('moveTicketModal-' + ticket.id);
         }
       }
     }
@@ -134,8 +128,12 @@ export class BoardsStateService {
     return this._boards.getValue()[0]?.id;
   }
 
-  returnIdOfPreviousColumn(board: BoardModel): number {
-    return board.columnList[board.columnList.length - 1]?.id;
+  returnGreatestColumnId(board: BoardModel) {
+    const boardClone = new BoardModel(board.id, board.name, board.description, [...board.columnList]);
+    const sortedArray = boardClone.columnList.sort((a, b) => {
+      return a.id - b.id;
+    });
+    return sortedArray[sortedArray.length -1].id;
   }
 
   updateSelectedBoard(board: BoardModel): void {

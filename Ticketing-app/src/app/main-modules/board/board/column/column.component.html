@@ -4,7 +4,7 @@
         class="drop-area" 
         cdkDropList
         [cdkDropListData]="columnFromParent.taskList"
-        (cdkDropListDropped)="drop($event)"
+        (cdkDropListDropped)="drop($event, columnFromParent.taskList)"
         (contextmenu)="configContextMenu($event, columnFromParent.id)">
         <div class="column-header">
             <h3>{{columnFromParent?.name}}</h3>
@@ -39,19 +39,6 @@
             </app-ui-button>
         </form>
 
-    </div>
-    <div *ngIf="isMenuVisible" class="more-menu">
-        <div class="menu-header">
-            <span>Options</span>
-        </div>
-        <div class="menu-body">
-            <ul class="list">
-                <li (click)="modalStateGlobalService.openModal('deleteDialog', columnFromParent.id)">
-                    delete column
-                    <img src="../../../../../assets/images/trash.png" alt="delete">
-                </li>
-            </ul>
-        </div>
     </div>
 </div>
 

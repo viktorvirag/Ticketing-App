@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ColumnModel } from 'src/app/models/columnModel';
+import { DragAndDropService } from 'src/app/services/drag-and-drop.service';
 import { BoardsStateService } from '../../boards-screen/boards-state.service';
 
 @Component({
@@ -16,7 +17,8 @@ export class BoardComponent implements OnInit {
   @ViewChild('target') targetElement: ElementRef;
   constructor(
     public boardsStateService: BoardsStateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dragAndDropService: DragAndDropService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +42,8 @@ export class BoardComponent implements OnInit {
     this.isFormVisible = !this.isFormVisible;
   }
   addNewColumn(boardId: number) {
-    let columnToCreate = new ColumnModel();
+    //let columnToCreate = {} as ColumnModel;
+    let columnToCreate = new ColumnModel(-1, boardId, this.fcColumnName.value, [], true);
     columnToCreate.boardId = boardId;
     columnToCreate.taskList =[];
     columnToCreate.name = this.fcColumnName.value;
@@ -51,18 +54,8 @@ export class BoardComponent implements OnInit {
     this.fcColumnName.reset();
     this.isFormVisible = false;
   }
-  drop(event: CdkDragDrop<ColumnModel[]>, columnList: ColumnModel[]) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(columnList, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    this.boardsStateService.setBoardListToStorage();
+  drop(event: CdkDragDrop<any[]>, DropListData: any[]) {
+    this.dragAndDropService.drop(event, DropListData);
   }
 
 
