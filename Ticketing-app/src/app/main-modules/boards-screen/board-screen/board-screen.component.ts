@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { BoardModel } from 'src/app/models/boardModel';
 import { ColumnModel } from 'src/app/models/columnModel';
 import { TaskModel } from 'src/app/models/taskModel';
@@ -27,8 +28,16 @@ export class BoardScreenComponent implements OnInit {
     this.ticketService.getGreatestId();
   }
 
-  get boardsFromService$() {
+  get boardsFromService$(): Observable<BoardModel[]> {
     return this.boardsStateService.boards$
+  }
+
+  get createBoardModal() {
+    return this.modalStateGlobalService.modals.createBoardModal;
+  }
+
+  openCreateBoardModal() {
+    this.modalStateGlobalService.openModal('createBoardModal')
   }
 
   createNewBoard() {   
@@ -55,8 +64,6 @@ export class BoardScreenComponent implements OnInit {
     
     newColumn.taskList.push(defaultTask);
     defaultColumns.push(newColumn);
-
-
 
     this.boardsStateService.createBorad(newBoard);
     this.ticketService.setGreatestTaskId(defaultTask.id);

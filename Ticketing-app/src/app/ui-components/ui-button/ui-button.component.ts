@@ -17,9 +17,7 @@ export class UiButtonComponent implements OnInit {
   }
 
   emitClick() {
-    if(!this.disabled) {
-      this.clickEmitter.emit();
-    }
+    this.clickEmitter.emit();
   }
 
   get isDisabled() {

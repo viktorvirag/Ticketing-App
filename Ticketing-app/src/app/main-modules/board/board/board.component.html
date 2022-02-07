@@ -2,14 +2,12 @@
     <h3>Board details</h3>
     <ng-container *ngIf="selectedBoardFromService$ | async as boardModel">
         <h1>{{boardModel.name}}</h1>
-        <p> {{boardModel.description}}</p>
+        <p class="description">{{boardModel.description}}</p>
         <div class="columns-holder" cdkDropList [cdkDropListData]="boardModel.columnList" cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event, boardModel.columnList)" cdkDropListGroup>
             <app-column *ngFor="let column of boardModel.columnList" [columnFromParent]="column" cdkDrag [cdkDragData]="boardModel.columnList">
             </app-column>
             <div #target class="add-new-column">
-                <app-ui-button class="add-btn" *ngIf="!isFormVisible" (clickEmitter)="toggleForm()">
-                    + add new column
-                </app-ui-button>
+                <app-ui-button class="add-btn" *ngIf="!isFormVisible" (clickEmitter)="toggleForm()">+ add new column</app-ui-button>
                 <form *ngIf="isFormVisible" (keyup.enter)="addNewColumn(boardModel.id)" class="create-column-form">
                     <div class="close-x-holder">
                         <svg id="close" class="close-x" (click)="toggleForm()" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +19,7 @@
                         inputName="column name"
                         [fc]="fcColumnName"
                     ></ui-input>
-                    <app-ui-button (clickEmitter)="addNewColumn(boardModel.id)">
+                    <app-ui-button [disabled]="!isFormControlValid()" (clickEmitter)="addNewColumn(boardModel.id)">
                         create
                     </app-ui-button>
                 </form>

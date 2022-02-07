@@ -22,6 +22,9 @@ export class BoardPreviewComponent implements OnInit {
     this.boardsStateService.deleteBoard(boardToDelete);
     this.modalStateGlobalService.closeModal('deleteDialog-' + this.boardFromParent.id);
   }
+  openDeleteDialog() {
+    this.modalStateGlobalService.openModal('deleteDialog', this.boardFromParent.id)
+  }
   get modalsFromServie(): boolean {
     return this.modalStateGlobalService.modals[`deleteDialog-${this.boardFromParent.id}`]
   }

@@ -61,11 +61,11 @@ export class TicketComponent implements OnInit {
   callMoveTicket() {
     this.boardsStateService.moveTicket(this.ticketFromParent, (this.moveTicketForm.controls["selectBoardControl"].value).id, (this.moveTicketForm.controls["selectColumnControl"].value).id);
   }
-  stopIt($event: any) {
+  stopIt($event: MouseEvent) {
     $event.stopPropagation();
   }
   getOptionText(option: BoardModel) {
-    return option?.name;
+    return option.name;
   }
   get modalsFromServie(): boolean {
     return this.modalStateGlobalService.modals[`moveTicketModal-${this.ticketFromParent.id}`];

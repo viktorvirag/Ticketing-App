@@ -42,7 +42,6 @@ export class BoardComponent implements OnInit {
     this.isFormVisible = !this.isFormVisible;
   }
   addNewColumn(boardId: number) {
-    //let columnToCreate = {} as ColumnModel;
     let columnToCreate = new ColumnModel(-1, boardId, this.fcColumnName.value, [], true);
     columnToCreate.boardId = boardId;
     columnToCreate.taskList =[];
@@ -57,6 +56,8 @@ export class BoardComponent implements OnInit {
   drop(event: CdkDragDrop<any[]>, DropListData: any[]) {
     this.dragAndDropService.drop(event, DropListData);
   }
-
+  isFormControlValid(): boolean {
+    return this.fcColumnName.valid;
+  }
 
 }

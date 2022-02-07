@@ -4,16 +4,14 @@
     <div class="my-boards">
         <div class="title-row">
             <h2>My Boards</h2>
-            <app-ui-button (clickEmitter)="modalStateGlobalService.openModal('createBoardModal')">
-                +
-            </app-ui-button>
+            <app-ui-button class="add-button" (clickEmitter)="openCreateBoardModal()">+</app-ui-button>
         </div>
         <div class="board-preview-holder">
             <app-board-preview *ngFor="let board of (boardsFromService$ | async)" [boardFromParent]="board"></app-board-preview>
         </div>
     </div>
 
-    <app-modal *ngIf="modalStateGlobalService.modals.createBoardModal" (close)="modalStateGlobalService.closeModal('createBoardModal')">
+    <app-modal *ngIf="createBoardModal" (close)="modalStateGlobalService.closeModal('createBoardModal')">
         <div class="create-board-modal-body">
             <h2>create new board</h2>
             <form class="create-board-form" (keyup.enter)="createNewBoard()">
@@ -26,9 +24,7 @@
                     [fc]="fcBoardDescription"
                 ></ui-input>
             </form>
-            <app-ui-button (clickEmitter)="createNewBoard()">
-                create
-            </app-ui-button>
+            <app-ui-button class="create-button" (clickEmitter)="createNewBoard()">create</app-ui-button>
         </div>
     </app-modal>    
 </section>
