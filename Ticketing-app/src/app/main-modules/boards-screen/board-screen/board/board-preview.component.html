@@ -12,7 +12,7 @@
             <app-ui-button class="open-board-btn" [routerLink]="['../board', boardFromParent.id]">
                 open
             </app-ui-button>
-            <app-ui-delete-button (clickEmitter)="modalStateGlobalService.openModal('deleteDialog', boardFromParent.id)">
+            <app-ui-delete-button (clickEmitter)="openDeleteDialog()">
                 delete
             </app-ui-delete-button>
         </div>

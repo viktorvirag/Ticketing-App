@@ -15,5 +15,9 @@ button {
     color: white;
 }
 .disabled {
+    pointer-events: none;
+}
+
+.not-allowed {
     cursor: not-allowed;
 }

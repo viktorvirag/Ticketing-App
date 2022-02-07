@@ -1,3 +1,5 @@
-<button (click)="emitClick()" [class.disabled]="isDisabled">
-    <ng-content></ng-content>
-</button>
+<div class="wrapper" [class.not-allowed]="isDisabled">
+    <button (click)="emitClick()" [class.disabled]="isDisabled">
+        <ng-content></ng-content>
+    </button>
+</div>
